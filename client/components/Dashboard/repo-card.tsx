@@ -118,7 +118,7 @@ export function RepoCard({ repo }: { repo: Repository }) {
 
     return (
         <div
-            className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-zinc-900/90 via-zinc-950/80 to-black/90 p-5 shadow-[0_4px_24px_rgba(0,0,0,0.4)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.18] hover:shadow-[0_12px_32px_rgba(0,0,0,0.6)]"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-zinc-900/90 via-zinc-950/80 to-black/90 p-4 sm:p-5 shadow-[0_4px_24px_rgba(0,0,0,0.4)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.18] hover:shadow-[0_12px_32px_rgba(0,0,0,0.6)]"
             style={
                 {
                     "--lang-glow": langMeta.glowColor,
@@ -139,31 +139,33 @@ export function RepoCard({ repo }: { repo: Repository }) {
                 }}
             />
 
-            <div className="space-y-4">
+            <div className="space-y-3.5 sm:space-y-4">
                 {/* Header: Lens Aperture + Title + Status */}
-                <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-center gap-3 min-w-0">
+                <div className="flex items-start justify-between gap-2.5 sm:gap-3">
+                    <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
                         {/* Lens Aperture Icon */}
                         <div
-                            className={`flex size-11 shrink-0 items-center justify-center rounded-xl border ${langMeta.borderColor} ${langMeta.badgeBg} font-mono font-bold text-xs tracking-wider ${langMeta.textColor} shadow-[0_0_15px_rgba(0,0,0,0.5)] transition-transform duration-300 group-hover:scale-105`}
+                            className={`flex size-9 sm:size-11 shrink-0 items-center justify-center rounded-xl border ${langMeta.borderColor} ${langMeta.badgeBg} font-mono font-bold text-xs tracking-wider ${langMeta.textColor} shadow-[0_0_15px_rgba(0,0,0,0.5)] transition-transform duration-300 group-hover:scale-105`}
                         >
                             {langMeta.tag}
                         </div>
 
                         {/* Title and Owner */}
                         <div className="min-w-0 flex-1">
-                            <div className="flex items-center gap-1.5 text-[11px] font-mono text-zinc-400">
-                                <Terminal className="size-3 text-zinc-500" />
+                            <div className="flex items-center gap-1.5 text-[10px] sm:text-[11px] font-mono text-zinc-400">
+                                <Terminal className="size-3 text-zinc-500 shrink-0" />
                                 <span className="truncate">@{repo.owner}</span>
                             </div>
-                            <h3 className="truncate font-sans text-base font-semibold text-zinc-100 tracking-tight transition-colors group-hover:text-white">
+                            <h3 className="truncate font-sans text-sm sm:text-base font-semibold text-zinc-100 tracking-tight transition-colors group-hover:text-white">
                                 {repo.name}
                             </h3>
                         </div>
                     </div>
 
                     {/* Status Beacon */}
-                    <RepoStatus status={repo.indexStatus} />
+                    <div className="shrink-0">
+                        <RepoStatus status={repo.indexStatus} />
+                    </div>
                 </div>
 
                 {/* Description */}
@@ -249,14 +251,14 @@ export function RepoCard({ repo }: { repo: Repository }) {
             </div>
 
             {/* Action Deck (Bottom Rail) */}
-            <div className="mt-5 flex items-center justify-between border-t border-zinc-800/60 pt-3.5">
+            <div className="mt-4 sm:mt-5 flex items-center justify-between border-t border-zinc-800/60 pt-3 sm:pt-3.5">
                 {/* GitHub Telemetry Link */}
                 {repo.htmlUrl ? (
                     <a
                         href={repo.htmlUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="group/link inline-flex items-center gap-1 font-mono text-[11px] text-zinc-400 transition-colors hover:text-white"
+                        className="group/link inline-flex items-center gap-1 font-mono text-[10px] sm:text-[11px] text-zinc-400 transition-colors hover:text-white"
                     >
                         <span>GitHub</span>
                         <ArrowUpRight className="size-3 transition-transform duration-200 group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
@@ -270,7 +272,7 @@ export function RepoCard({ repo }: { repo: Repository }) {
                     {isReady ? (
                         <Link
                             href={`/chat/${repo.id}`}
-                            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 px-3.5 py-1.5 font-sans text-xs font-semibold text-zinc-950 shadow-[0_0_20px_rgba(6,182,212,0.35)] transition-all duration-200 hover:brightness-110 hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] active:scale-95"
+                            className="inline-flex items-center gap-1.5 sm:gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 px-3 sm:px-3.5 py-1.5 font-sans text-xs font-semibold text-zinc-950 shadow-[0_0_20px_rgba(6,182,212,0.35)] transition-all duration-200 hover:brightness-110 hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] active:scale-95"
                         >
                             <MessageSquareCode className="size-3.5" />
                             <span>Launch Chat</span>
@@ -279,7 +281,7 @@ export function RepoCard({ repo }: { repo: Repository }) {
                     ) : isIndexing ? (
                         <button
                             disabled
-                            className="inline-flex cursor-not-allowed items-center gap-2 rounded-xl border border-cyan-500/30 bg-cyan-950/40 px-3.5 py-1.5 font-mono text-xs text-cyan-300 shadow-inner"
+                            className="inline-flex cursor-not-allowed items-center gap-1.5 sm:gap-2 rounded-xl border border-cyan-500/30 bg-cyan-950/40 px-3 sm:px-3.5 py-1.5 font-mono text-xs text-cyan-300 shadow-inner"
                         >
                             <Loader2 className="size-3 animate-spin text-cyan-400" />
                             <span>Analyzing...</span>
@@ -288,14 +290,14 @@ export function RepoCard({ repo }: { repo: Repository }) {
                         <button
                             onClick={() => startIndexing.mutate(repo.id)}
                             disabled={startIndexing.isPending}
-                            className="inline-flex items-center gap-2 rounded-xl border border-white/[0.12] bg-zinc-900/90 px-3.5 py-1.5 font-sans text-xs font-semibold text-zinc-100 shadow-[0_2px_10px_rgba(0,0,0,0.5)] transition-all duration-200 hover:border-cyan-400/50 hover:bg-zinc-800 hover:text-white hover:shadow-[0_0_15px_rgba(6,182,212,0.2)] active:scale-95 disabled:opacity-50"
+                            className="inline-flex items-center gap-1.5 sm:gap-2 rounded-xl border border-white/[0.12] bg-zinc-900/90 px-3 sm:px-3.5 py-1.5 font-sans text-xs font-semibold text-zinc-100 shadow-[0_2px_10px_rgba(0,0,0,0.5)] transition-all duration-200 hover:border-cyan-400/50 hover:bg-zinc-800 hover:text-white hover:shadow-[0_0_15px_rgba(6,182,212,0.2)] active:scale-95 disabled:opacity-50"
                         >
                             {startIndexing.isPending ? (
                                 <Loader2 className="size-3.5 animate-spin text-cyan-400" />
                             ) : (
                                 <Sparkles className="size-3.5 text-cyan-400" />
                             )}
-                            <span>{isFailed ? "Retry Index" : "Index Codebase"}</span>
+                            <span>{isFailed ? "Retry" : "Index"}</span>
                         </button>
                     )}
                 </div>

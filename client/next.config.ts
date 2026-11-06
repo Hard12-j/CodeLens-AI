@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
     },
   },
   async rewrites() {
-       const backend = process.env.BACKEND_URL;
+       const backend = process.env.BACKEND_URL || "http://localhost:8080";
        return [
          { source: "/api/:path*", destination: `${backend}/api/:path*` },
          { source: "/oauth2/:path*", destination: `${backend}/oauth2/:path*` },

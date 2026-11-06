@@ -40,33 +40,33 @@ export function ChatMessage({
     return (
         <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-black text-zinc-100">
             {/* Top Sub-Bar */}
-            <div className="flex items-center justify-between border-b border-white/[0.06] bg-zinc-950/60 px-4 py-2.5 backdrop-blur-md">
-                <div className="flex items-center gap-2">
-                    <span className="flex size-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="font-mono text-xs text-zinc-300">
-                        AST RAG Stream Active · {repo.fullName}
+            <div className="flex items-center justify-between border-b border-white/[0.06] bg-zinc-950/60 px-3 sm:px-4 py-2 sm:py-2.5 backdrop-blur-md">
+                <div className="flex items-center gap-2 min-w-0">
+                    <span className="flex size-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                    <span className="font-mono text-[11px] sm:text-xs text-zinc-300 truncate">
+                        <span className="hidden sm:inline">AST RAG Active · </span>{repo.fullName}
                     </span>
                 </div>
-                <div className="font-mono text-[10px] text-zinc-500">
-                    {repo.chunkCount} VECTORS INDEXED
+                <div className="font-mono text-[9px] sm:text-[10px] text-zinc-500 shrink-0 uppercase ml-2">
+                    {repo.chunkCount} VECTORS
                 </div>
             </div>
 
             {/* Scrollable Message Feed */}
-            <div className="flex-1 overflow-y-auto px-4 py-6 md:px-8">
-                <div className="mx-auto flex max-w-3xl flex-col gap-6">
+            <div className="flex-1 overflow-y-auto px-3 py-4 sm:px-6 sm:py-6 md:px-8">
+                <div className="mx-auto flex max-w-3xl flex-col gap-4 sm:gap-6">
                     {visibleMessages.length === 0 ? (
-                        <div className="my-12 rounded-2xl border border-white/[0.08] bg-gradient-to-b from-zinc-900/60 to-black p-8 text-center backdrop-blur-xl">
-                            <div className="mx-auto flex size-12 items-center justify-center rounded-2xl border border-cyan-500/30 bg-cyan-950/40 text-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.25)]">
-                                <Sparkles className="size-6" />
+                        <div className="my-6 sm:my-12 rounded-2xl border border-white/[0.08] bg-gradient-to-b from-zinc-900/60 to-black p-5 sm:p-8 text-center backdrop-blur-xl">
+                            <div className="mx-auto flex size-11 sm:size-12 items-center justify-center rounded-2xl border border-cyan-500/30 bg-cyan-950/40 text-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.25)]">
+                                <Sparkles className="size-5 sm:size-6" />
                             </div>
-                            <h3 className="mt-4 font-sans text-lg font-bold text-white">
+                            <h3 className="mt-4 font-sans text-base sm:text-lg font-bold text-white">
                                 CodeLens Observatory Initialized
                             </h3>
                             <p className="mx-auto mt-2 max-w-md text-xs leading-relaxed text-zinc-400">
-                                This repository has been vectorized and indexed into PgVector. Ask any question about algorithms, file dependencies, security issues, or setup.
+                                This repository has been vectorized and indexed into PgVector. Ask any question about architecture, functions, logic, or dependencies.
                             </p>
-                            <div className="mt-6 flex flex-wrap items-center justify-center gap-2 font-mono text-[11px] text-zinc-500">
+                            <div className="mt-5 sm:mt-6 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 font-mono text-[10px] sm:text-[11px] text-zinc-500">
                                 <span>💡 Select a file from the</span>
                                 <span className="rounded bg-zinc-800 px-1.5 py-0.5 text-cyan-300">Repo Tree 🌲</span>
                                 <span>tab to query specific modules.</span>
@@ -86,7 +86,7 @@ export function ChatMessage({
                                 >
                                     <div
                                         className={cn(
-                                            "max-w-[88%] space-y-3 rounded-2xl border p-4 shadow-md backdrop-blur-xl transition-all",
+                                            "max-w-[94%] sm:max-w-[88%] space-y-2.5 sm:space-y-3 rounded-2xl border p-3.5 sm:p-4 shadow-md backdrop-blur-xl transition-all",
                                             isUser
                                                 ? "border-cyan-500/30 bg-zinc-900/90 text-zinc-100 shadow-[0_0_15px_rgba(6,182,212,0.08)]"
                                                 : "border-white/[0.08] bg-zinc-950/80 text-zinc-200"
@@ -138,7 +138,7 @@ export function ChatMessage({
                                                             title={cit.snippet || cit.filePath}
                                                         >
                                                             <FileCode2 className="size-3 text-cyan-400" />
-                                                            <span className="max-w-[200px] truncate">{cit.filePath}</span>
+                                                            <span className="max-w-[130px] sm:max-w-[200px] truncate">{cit.filePath}</span>
                                                             <span className="text-zinc-500">#{cit.chunkIndex}</span>
                                                         </div>
                                                     ))}
@@ -154,9 +154,9 @@ export function ChatMessage({
                     {/* Waiting / Thinking Indicator */}
                     {isLoading && !streamText && (
                         <div className="flex justify-start">
-                            <div className="flex items-center gap-2.5 rounded-2xl border border-cyan-500/30 bg-cyan-950/20 px-4 py-3 font-mono text-xs text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.15)]">
+                            <div className="flex items-center gap-2 sm:gap-2.5 rounded-2xl border border-cyan-500/30 bg-cyan-950/20 px-3.5 sm:px-4 py-2.5 sm:py-3 font-mono text-xs text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.15)]">
                                 <span className="size-2 rounded-full bg-cyan-400 animate-ping" />
-                                <span>Scanning vector store & synthesizing response...</span>
+                                <span>Scanning vector store & synthesizing...</span>
                             </div>
                         </div>
                     )}

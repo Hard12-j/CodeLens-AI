@@ -33,39 +33,39 @@ export default function HomePage() {
 
             {/* Navigation Bar */}
             <header className="relative z-20 border-b border-white/[0.08] bg-black/60 backdrop-blur-xl">
-                <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto flex h-14 sm:h-16 max-w-7xl items-center justify-between px-3 sm:px-6 lg:px-8">
                     {/* Brand */}
-                    <div className="flex items-center gap-3">
-                        <div className="flex size-9 items-center justify-center rounded-xl border border-cyan-500/40 bg-cyan-950/40 text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                        <div className="flex size-8 sm:size-9 items-center justify-center rounded-xl border border-cyan-500/40 bg-cyan-950/40 text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)]">
                             <Sparkles className="size-4" />
                         </div>
-                        <div className="flex items-center gap-2">
-                            <span className="font-sans text-base font-bold tracking-tight text-white">
+                        <div className="flex items-center gap-1.5 sm:gap-2">
+                            <span className="font-sans text-sm sm:text-base font-bold tracking-tight text-white">
                                 CodeLens <span className="text-cyan-400">AI</span>
                             </span>
-                            <span className="rounded-full border border-cyan-500/20 bg-cyan-950/60 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-cyan-400">
+                            <span className="rounded-full border border-cyan-500/20 bg-cyan-950/60 px-1.5 sm:px-2 py-0.5 font-mono text-[9px] sm:text-[10px] uppercase tracking-wider text-cyan-400">
                                 v2.0
                             </span>
                         </div>
                     </div>
 
                     {/* Navigation Actions */}
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
                         {user ? (
                             <Link
                                 href="/dashboard"
-                                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-400 px-4 py-2 font-sans text-xs font-semibold text-zinc-950 shadow-[0_0_20px_rgba(6,182,212,0.35)] transition-all hover:brightness-110 active:scale-95"
+                                className="inline-flex items-center gap-1.5 sm:gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-400 px-3 sm:px-4 py-1.5 sm:py-2 font-sans text-xs font-semibold text-zinc-950 shadow-[0_0_20px_rgba(6,182,212,0.35)] transition-all hover:brightness-110 active:scale-95"
                             >
-                                <span>Go to Dashboard</span>
+                                <span>Dashboard</span>
                                 <ArrowRight className="size-3.5" />
                             </Link>
                         ) : (
                             <a
                                 href={getGithubLoginUrl()}
-                                className="inline-flex items-center gap-2 rounded-xl border border-white/[0.12] bg-zinc-900/90 px-4 py-2 font-sans text-xs font-semibold text-white shadow-sm transition-all hover:border-cyan-400/50 hover:bg-zinc-800 hover:shadow-[0_0_15px_rgba(6,182,212,0.25)] active:scale-95"
+                                className="inline-flex items-center gap-1.5 sm:gap-2 rounded-xl border border-white/[0.12] bg-zinc-900/90 px-3 sm:px-4 py-1.5 sm:py-2 font-sans text-xs font-semibold text-white shadow-sm transition-all hover:border-cyan-400/50 hover:bg-zinc-800 hover:shadow-[0_0_15px_rgba(6,182,212,0.25)] active:scale-95"
                             >
                                 <GithubIcon className="size-3.5" />
-                                <span>Sign In with GitHub</span>
+                                <span>Sign In</span>
                             </a>
                         )}
                     </div>
@@ -73,21 +73,21 @@ export default function HomePage() {
             </header>
 
             {/* Hero Section */}
-            <main className="relative z-10 mx-auto max-w-7xl px-4 pt-16 pb-24 sm:px-6 lg:px-8">
+            <main className="relative z-10 mx-auto max-w-7xl px-3.5 pt-10 sm:pt-16 pb-16 sm:pb-24 sm:px-6 lg:px-8">
                 <div className="mx-auto max-w-3xl text-center">
                     {/* Telemetry pill */}
-                    <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-950/40 px-3.5 py-1 text-xs text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.2)] backdrop-blur-md">
-                        <span className="relative flex size-2">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-950/40 px-3 sm:px-3.5 py-1 text-xs text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.2)] backdrop-blur-md max-w-full">
+                        <span className="relative flex size-2 shrink-0">
                             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
                             <span className="relative inline-flex size-2 rounded-full bg-cyan-500" />
                         </span>
-                        <span className="font-mono text-[11px] uppercase tracking-wider">
+                        <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider truncate">
                             Neural Code Observatory & AST Vector RAG
                         </span>
                     </div>
 
                     {/* Hero Title */}
-                    <h1 className="mt-6 font-sans text-4xl font-extrabold tracking-tight text-white sm:text-6xl sm:leading-[1.15]">
+                    <h1 className="mt-5 sm:mt-6 font-sans text-3xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl leading-tight sm:leading-[1.15]">
                         Supercharge Your Understanding of{" "}
                         <span className="bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
                             Any GitHub Codebase
@@ -95,15 +95,15 @@ export default function HomePage() {
                     </h1>
 
                     {/* Subtitle */}
-                    <p className="mt-5 text-base leading-relaxed text-zinc-400 sm:text-lg">
+                    <p className="mt-4 sm:mt-5 text-sm sm:text-base leading-relaxed text-zinc-400 sm:text-lg">
                         Connect private or public repositories. CodeLens chunks your files, embeds them into high-dimensional vector space with Google Gemini, and lets you interrogate architecture, logic, and bugs in real-time.
                     </p>
 
                     {/* Main CTA Deck */}
-                    <div className="mt-8 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
+                    <div className="mt-6 sm:mt-8 flex flex-col items-center justify-center gap-3 sm:gap-3.5 sm:flex-row">
                         <a
                             href={user ? "/dashboard" : getGithubLoginUrl()}
-                            className="inline-flex h-12 w-full items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-400 to-emerald-400 px-6 font-sans text-sm font-semibold text-zinc-950 shadow-[0_0_30px_rgba(6,182,212,0.4)] transition-all hover:brightness-110 hover:shadow-[0_0_40px_rgba(6,182,212,0.6)] active:scale-95 sm:w-auto"
+                            className="inline-flex h-11 sm:h-12 w-full items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-400 to-emerald-400 px-5 sm:px-6 font-sans text-sm font-semibold text-zinc-950 shadow-[0_0_30px_rgba(6,182,212,0.4)] transition-all hover:brightness-110 hover:shadow-[0_0_40px_rgba(6,182,212,0.6)] active:scale-95 sm:w-auto"
                         >
                             <GithubIcon className="size-4" />
                             <span>{user ? "Open Dashboard" : "Connect with GitHub"}</span>
@@ -112,21 +112,21 @@ export default function HomePage() {
 
                         <Link
                             href={user ? "/dashboard" : "/login"}
-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/[0.12] bg-zinc-900/80 px-5 font-sans text-sm font-medium text-zinc-200 backdrop-blur-md transition-all hover:border-white/[0.25] hover:bg-zinc-800 hover:text-white sm:w-auto"
+                            className="inline-flex h-11 sm:h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/[0.12] bg-zinc-900/80 px-5 font-sans text-sm font-medium text-zinc-200 backdrop-blur-md transition-all hover:border-white/[0.25] hover:bg-zinc-800 hover:text-white sm:w-auto"
                         >
                             <span>Explore Capabilities</span>
                         </Link>
                     </div>
 
                     {/* Quick trust metrics */}
-                    <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs font-mono text-zinc-500">
+                    <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-[11px] sm:text-xs font-mono text-zinc-500">
                         <span className="flex items-center gap-1.5">
                             <CheckCircle2 className="size-3.5 text-cyan-400" />
                             OAuth 2.0 Scope Verified
                         </span>
                         <span className="flex items-center gap-1.5">
                             <CheckCircle2 className="size-3.5 text-emerald-400" />
-                            PgVector 768-Dim Embeddings
+                            PgVector 768-Dim
                         </span>
                         <span className="flex items-center gap-1.5">
                             <CheckCircle2 className="size-3.5 text-teal-400" />
@@ -136,20 +136,21 @@ export default function HomePage() {
                 </div>
 
                 {/* Hologram Terminal Showcase */}
-                <div className="mt-14 overflow-hidden rounded-2xl border border-white/[0.12] bg-gradient-to-b from-zinc-900/90 via-zinc-950/90 to-black p-2 shadow-[0_20px_80px_rgba(0,0,0,0.8)] backdrop-blur-2xl">
+                <div className="mt-10 sm:mt-14 overflow-hidden rounded-xl sm:rounded-2xl border border-white/[0.12] bg-gradient-to-b from-zinc-900/90 via-zinc-950/90 to-black p-2 shadow-[0_20px_80px_rgba(0,0,0,0.8)] backdrop-blur-2xl">
                     {/* Window Controls */}
-                    <div className="flex items-center justify-between border-b border-white/[0.06] px-4 py-2.5">
-                        <div className="flex items-center gap-2">
-                            <div className="size-3 rounded-full bg-rose-500/80" />
-                            <div className="size-3 rounded-full bg-amber-500/80" />
-                            <div className="size-3 rounded-full bg-emerald-500/80" />
-                            <span className="ml-2 font-mono text-xs text-zinc-500">
-                                codelens://observatory/session-telemetry
+                    <div className="flex items-center justify-between border-b border-white/[0.06] px-3 sm:px-4 py-2 sm:py-2.5">
+                        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                            <div className="size-2.5 sm:size-3 rounded-full bg-rose-500/80" />
+                            <div className="size-2.5 sm:size-3 rounded-full bg-amber-500/80" />
+                            <div className="size-2.5 sm:size-3 rounded-full bg-emerald-500/80" />
+                            <span className="ml-1 sm:ml-2 font-mono text-[10px] sm:text-xs text-zinc-500 truncate">
+                                codelens://observatory
                             </span>
                         </div>
-                        <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-400">
+                        <div className="flex items-center gap-1.5 sm:gap-2 font-mono text-[10px] sm:text-[11px] text-zinc-400 shrink-0">
                             <span className="flex size-2 rounded-full bg-emerald-400" />
-                            <span>VECTOR DB: CONNECTED</span>
+                            <span className="hidden xs:inline sm:inline">VECTOR DB: CONNECTED</span>
+                            <span className="xs:hidden sm:hidden">CONNECTED</span>
                         </div>
                     </div>
 

@@ -2,7 +2,8 @@
 
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
-import { ArrowLeft, GitBranch, Sparkles } from "lucide-react"
+import { ArrowLeft, FolderGit2, GitBranch, MessageSquareCode, Sparkles } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 import { ChatComposer } from "@/components/chat/chat-composer"
 import { ChatMessage } from "@/components/chat/chat-messages"
@@ -32,6 +33,7 @@ export function ChatView({ repoId }: { repoId: string }) {
     const createSession = useCreateChatSession(repoId)
     const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null)
     const [externalPrompt, setExternalPrompt] = useState("")
+    const [mobileTab, setMobileTab] = useState<"chat" | "sidebar">("chat")
     const autoCreateRef = useRef(false)
 
     const sessionId = selectedSessionId ?? sessionsQuery.data?.[0]?.id ?? null
@@ -110,6 +112,7 @@ export function ChatView({ repoId }: { repoId: string }) {
 
     return (
         <AppShell
+            noPadding
             title={repo.fullName}
             description={
                 ready ? "Neural AST RAG grounding active" : "Vector store indexing in progress"
@@ -117,15 +120,58 @@ export function ChatView({ repoId }: { repoId: string }) {
             actions={
                 <Link
                     href="/dashboard"
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-white/[0.1] bg-zinc-900/80 px-3 py-1.5 font-mono text-xs text-zinc-300 hover:border-cyan-400 hover:text-white transition-all"
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-white/[0.1] bg-zinc-900/80 px-2.5 sm:px-3 py-1.5 font-mono text-xs text-zinc-300 hover:border-cyan-400 hover:text-white transition-all shrink-0"
                 >
-                    <ArrowLeft className="size-3.5" />
-                    <span>Repositories</span>
+                    <ArrowLeft className="size-3.5 shrink-0" />
+                    <span className="hidden sm:inline">Repositories</span>
                 </Link>
             }
         >
-            <div className="flex min-h-0 flex-1 flex-col md:flex-row bg-black">
+            <div className="flex flex-1 flex-col md:flex-row bg-black h-[calc(100dvh-3.5rem)] sm:h-[calc(100dvh-4rem)] md:h-[calc(100vh-4rem)] overflow-hidden">
+                {/* Mobile View Toggle Strip */}
+                <div className="flex md:hidden border-b border-white/[0.08] bg-zinc-950/90 p-1.5 gap-1.5 shrink-0">
+                    <button
+                        type="button"
+                        onClick={() => setMobileTab("chat")}
+                        className={cn(
+                            "flex-1 py-1.5 px-3 rounded-lg text-xs font-sans font-medium flex items-center justify-center gap-1.5 transition-all",
+                            mobileTab === "chat"
+                                ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 shadow-xs"
+                                : "text-zinc-400 hover:text-white"
+                        )}
+                    >
+                        <MessageSquareCode className="size-3.5" />
+                        <span>Chat</span>
+                        {(messageQuery.data?.length ?? 0) > 0 && (
+                            <span className="rounded-full bg-cyan-950 px-1.5 py-0.2 font-mono text-[10px] text-cyan-400 border border-cyan-500/30">
+                                {messageQuery.data?.length}
+                            </span>
+                        )}
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setMobileTab("sidebar")}
+                        className={cn(
+                            "flex-1 py-1.5 px-3 rounded-lg text-xs font-sans font-medium flex items-center justify-center gap-1.5 transition-all",
+                            mobileTab === "sidebar"
+                                ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 shadow-xs"
+                                : "text-zinc-400 hover:text-white"
+                        )}
+                    >
+                        <FolderGit2 className="size-3.5" />
+                        <span>Files & Sessions</span>
+                        {(sessionsQuery.data?.length ?? 0) > 0 && (
+                            <span className="rounded-full bg-zinc-800 px-1.5 py-0.2 font-mono text-[10px] text-zinc-300">
+                                {sessionsQuery.data?.length}
+                            </span>
+                        )}
+                    </button>
+                </div>
+
                 <ChatSidebar
+                    className={cn(
+                        mobileTab === "sidebar" ? "flex flex-1" : "hidden md:flex"
+                    )}
                     repo={{
                         ...repo,
                         indexStatus: indexStatus ?? repo.indexStatus,
@@ -134,11 +180,22 @@ export function ChatView({ repoId }: { repoId: string }) {
                         errorMessage: statusQuery.data?.errorMessage ?? repo.errorMessage,
                     }}
                     sessionId={sessionId}
-                    onSelectSession={setSelectedSessionId}
-                    onSelectFilePrompt={(prompt) => setExternalPrompt(prompt)}
+                    onSelectSession={(id) => {
+                        setSelectedSessionId(id)
+                        setMobileTab("chat")
+                    }}
+                    onSelectFilePrompt={(prompt) => {
+                        setExternalPrompt(prompt)
+                        setMobileTab("chat")
+                    }}
                 />
 
-                <section className="flex min-h-[70vh] min-w-0 flex-1 flex-col">
+                <section
+                    className={cn(
+                        "flex flex-1 flex-col min-h-0 min-w-0 overflow-hidden",
+                        mobileTab === "chat" ? "flex" : "hidden md:flex"
+                    )}
+                >
                     {!ready ? (
                         <IndexingState repo={repo} status={statusQuery.data} />
                     ) : (

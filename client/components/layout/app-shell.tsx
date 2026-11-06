@@ -28,30 +28,43 @@ import {
     SidebarMenuItem,
     SidebarProvider,
     SidebarTrigger,
+    useSidebar,
 } from "@/components/ui/sidebar";
 import { dashboardNavGroups, isDashboardNavActive } from "@/lib/dashboard-nav";
 import { cn } from "cn";
 
-export function AppShell({
-    children,
-    title,
-    description,
-    actions,
-    hideHeader = false,
-}: {
+export type AppShellProps = {
     children: React.ReactNode;
     title?: string;
     description?: string;
     actions?: React.ReactNode;
     hideHeader?: boolean;
-}) {
+    noPadding?: boolean;
+    contentClassName?: string;
+};
+
+function AppShellInner({
+    children,
+    title,
+    description,
+    actions,
+    hideHeader = false,
+    noPadding = false,
+    contentClassName,
+}: AppShellProps) {
     const pathname = usePathname();
-    const router = useRouter();
     const { data: user } = useCurrentUser();
     const logout = useLogout();
+    const { isMobile, setOpenMobile } = useSidebar();
+
+    const handleNavClick = () => {
+        if (isMobile) {
+            setOpenMobile(false);
+        }
+    };
 
     return (
-        <SidebarProvider>
+        <>
             <Sidebar
                 variant="inset"
                 collapsible="icon"
@@ -62,7 +75,7 @@ export function AppShell({
                         <SidebarMenuItem>
                             <SidebarMenuButton
                                 size="lg"
-                                render={<Link href="/dashboard" />}
+                                render={<Link href="/dashboard" onClick={handleNavClick} />}
                                 tooltip="CodeLens AI"
                                 className="hover:bg-zinc-900/80 active:bg-zinc-900 transition-all rounded-xl"
                             >
@@ -103,7 +116,7 @@ export function AppShell({
                                                 <SidebarMenuButton
                                                     isActive={active}
                                                     tooltip={item.title}
-                                                    render={<Link href={item.href} />}
+                                                    render={<Link href={item.href} onClick={handleNavClick} />}
                                                     className={cn(
                                                         "rounded-xl transition-all duration-200",
                                                         active
@@ -127,7 +140,6 @@ export function AppShell({
                     <SidebarMenu>
                         <SidebarMenuItem>
                             <div className="flex items-center gap-1">
-                                {/* Not clickable: avatar + name */}
                                 <div className="pointer-events-none flex min-w-0 flex-1 select-none items-center gap-2.5 overflow-hidden p-2">
                                     {user?.avatarUrl ? (
                                         // eslint-disable-next-line @next/next/no-img-element
@@ -151,10 +163,12 @@ export function AppShell({
                                     </div>
                                 </div>
                                 
-                                {/* Log out stays available */}
                                 <button
                                     type="button"
-                                    onClick={() => logout.mutate()}
+                                    onClick={() => {
+                                        handleNavClick();
+                                        logout.mutate();
+                                    }}
                                     aria-label="Log out"
                                     title="Log out"
                                     className="shrink-0 rounded-lg p-2 text-zinc-500 transition-colors hover:bg-rose-950/40 hover:text-rose-400 group-data-[collapsible=icon]:hidden"
@@ -165,35 +179,48 @@ export function AppShell({
                         </SidebarMenuItem>
                     </SidebarMenu>
                 </SidebarFooter>
-                
             </Sidebar>
 
             <SidebarInset className="bg-black text-zinc-100 min-h-screen">
                 {!hideHeader && (
-                    <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-3 border-b border-white/[0.06] bg-black/60 px-6 backdrop-blur-xl">
-                        <SidebarTrigger className="text-zinc-400 hover:text-white md:hidden" />
-                        <div className="flex min-w-0 flex-1 items-center justify-between gap-3">
-                            <div className="min-w-0">
+                    <header className="sticky top-0 z-30 flex h-14 sm:h-16 shrink-0 items-center gap-2 sm:gap-3 border-b border-white/[0.06] bg-black/70 px-3 sm:px-6 backdrop-blur-xl">
+                        <SidebarTrigger className="text-zinc-400 hover:text-white md:hidden shrink-0" />
+                        <div className="flex min-w-0 flex-1 items-center justify-between gap-2 sm:gap-3">
+                            <div className="min-w-0 flex-1">
                                 {title && (
-                                    <h1 className="truncate font-sans text-lg font-bold tracking-tight text-white">
+                                    <h1 className="truncate font-sans text-sm sm:text-lg font-bold tracking-tight text-white">
                                         {title}
                                     </h1>
                                 )}
                                 {description && (
-                                    <p className="truncate font-mono text-xs text-zinc-400">{description}</p>
+                                    <p className="truncate font-mono text-[10px] sm:text-xs text-zinc-400">{description}</p>
                                 )}
                             </div>
-                            {actions && <div className="flex items-center gap-2">{actions}</div>}
+                            {actions && <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">{actions}</div>}
                         </div>
                     </header>
                 )}
 
-                <main className="flex-1 overflow-auto bg-black">
-                    <div className={cn("mx-auto w-full max-w-7xl p-4 sm:p-6 lg:p-8", !hideHeader && "pt-6")}>
+                <main className={cn("flex-1 bg-black", noPadding ? "flex flex-col min-h-0 overflow-hidden" : "overflow-auto")}>
+                    <div className={cn(
+                        noPadding 
+                            ? "flex-1 flex flex-col min-h-0 w-full" 
+                            : "mx-auto w-full max-w-7xl p-3 sm:p-6 lg:p-8", 
+                        !hideHeader && !noPadding && "pt-4 sm:pt-6",
+                        contentClassName
+                    )}>
                         {children}
                     </div>
                 </main>
             </SidebarInset>
+        </>
+    );
+}
+
+export function AppShell(props: AppShellProps) {
+    return (
+        <SidebarProvider>
+            <AppShellInner {...props} />
         </SidebarProvider>
     );
 }

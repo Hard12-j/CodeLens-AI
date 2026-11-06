@@ -10,10 +10,10 @@ export function OverviewDashboard() {
 
     if (reposQuery.isLoading) {
         return (
-            <div className="space-y-8 p-4 md:p-8">
-                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="space-y-6 sm:space-y-8 p-3 sm:p-6 md:p-8">
+                <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 xl:grid-cols-4">
                     {Array.from({ length: 4 }).map((_, index) => (
-                        <div key={index} className="h-28 animate-pulse rounded-2xl border border-white/[0.05] bg-zinc-900/40" />
+                        <div key={index} className="h-24 sm:h-28 animate-pulse rounded-2xl border border-white/[0.05] bg-zinc-900/40" />
                     ))}
                 </div>
                 <div className="h-64 animate-pulse rounded-2xl border border-white/[0.05] bg-zinc-900/40" />
@@ -89,21 +89,21 @@ export function OverviewDashboard() {
     ];
 
     return (
-        <div className="space-y-8 p-4 md:p-8">
+        <div className="space-y-6 sm:space-y-8 p-3 sm:p-6 md:p-8">
             {/* Top Telemetry Stats */}
-            <section aria-label="Repository summary" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <section aria-label="Repository summary" className="grid gap-3 sm:gap-4 grid-cols-2 lg:grid-cols-4">
                 {stats.map(({ label, value, sub, Icon, accent, bgGlow }) => (
                     <div
                         key={label}
-                        className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-zinc-900/90 via-zinc-950/80 to-black/90 p-5 shadow-[0_4px_24px_rgba(0,0,0,0.3)] backdrop-blur-xl transition-all duration-300 hover:border-white/[0.18]"
+                        className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-zinc-900/90 via-zinc-950/80 to-black/90 p-3.5 sm:p-5 shadow-[0_4px_24px_rgba(0,0,0,0.3)] backdrop-blur-xl transition-all duration-300 hover:border-white/[0.18]"
                     >
                         <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${bgGlow} opacity-30`} />
                         <div className="flex items-center justify-between">
-                            <span className="font-mono text-xs uppercase tracking-wider text-zinc-400">{label}</span>
-                            <Icon className={`size-4 ${accent}`} />
+                            <span className="font-mono text-[10px] sm:text-xs uppercase tracking-wider text-zinc-400 truncate">{label}</span>
+                            <Icon className={`size-3.5 sm:size-4 shrink-0 ${accent}`} />
                         </div>
-                        <p className="mt-3 font-sans text-3xl font-bold tracking-tight text-white tabular-nums">{value}</p>
-                        <p className="mt-1 font-mono text-[11px] text-zinc-500">{sub}</p>
+                        <p className="mt-2 sm:mt-3 font-sans text-2xl sm:text-3xl font-bold tracking-tight text-white tabular-nums">{value}</p>
+                        <p className="mt-0.5 sm:mt-1 font-mono text-[10px] sm:text-[11px] text-zinc-500 truncate">{sub}</p>
                     </div>
                 ))}
             </section>

@@ -47,18 +47,18 @@ export function ChatComposer({
     }
 
     return (
-        <div className="border-t border-white/[0.08] bg-black/60 p-3 md:p-4 backdrop-blur-xl">
-            <div className="mx-auto max-w-3xl space-y-2.5">
+        <div className="border-t border-white/[0.08] bg-black/60 p-2.5 sm:p-3 md:p-4 backdrop-blur-xl">
+            <div className="mx-auto max-w-3xl space-y-2 sm:space-y-2.5">
                 {/* Starter Prompt Chips */}
                 {!value && (
-                    <div className="flex flex-wrap items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                    <div className="flex flex-nowrap sm:flex-wrap items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
                         {STARTER_PROMPTS.map(({ label, prompt }) => (
                             <button
                                 key={label}
                                 type="button"
                                 onClick={() => handlePromptChip(prompt)}
                                 disabled={disable}
-                                className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-zinc-900/60 px-3 py-1 font-mono text-[11px] text-zinc-400 hover:border-cyan-500/40 hover:bg-zinc-800 hover:text-cyan-300 transition-all disabled:opacity-40"
+                                className="shrink-0 whitespace-nowrap inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-zinc-900/60 px-2.5 sm:px-3 py-1 font-mono text-[10px] sm:text-[11px] text-zinc-400 hover:border-cyan-500/40 hover:bg-zinc-800 hover:text-cyan-300 transition-all disabled:opacity-40"
                             >
                                 <span>{label}</span>
                             </button>
@@ -67,7 +67,7 @@ export function ChatComposer({
                 )}
 
                 {/* Composer Box */}
-                <div className="relative overflow-hidden rounded-2xl border border-white/[0.1] bg-gradient-to-b from-zinc-900/90 via-zinc-950/90 to-black p-2.5 shadow-[0_4px_24px_rgba(0,0,0,0.4)] backdrop-blur-xl transition-all focus-within:border-cyan-500/50 focus-within:shadow-[0_0_20px_rgba(6,182,212,0.15)]">
+                <div className="relative overflow-hidden rounded-2xl border border-white/[0.1] bg-gradient-to-b from-zinc-900/90 via-zinc-950/90 to-black p-2 sm:p-2.5 shadow-[0_4px_24px_rgba(0,0,0,0.4)] backdrop-blur-xl transition-all focus-within:border-cyan-500/50 focus-within:shadow-[0_0_20px_rgba(6,182,212,0.15)]">
                     <textarea
                         ref={textareaRef}
                         value={value}
@@ -79,8 +79,8 @@ export function ChatComposer({
                             }
                         }}
                         disabled={disable}
-                        rows={3}
-                        className="max-h-36 min-h-[72px] w-full resize-none border-0 bg-transparent px-3 py-1.5 font-sans text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none disabled:cursor-not-allowed"
+                        rows={2}
+                        className="max-h-36 min-h-[52px] sm:min-h-[72px] w-full resize-none border-0 bg-transparent px-2.5 sm:px-3 py-1.5 font-sans text-xs sm:text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none disabled:cursor-not-allowed"
                         placeholder={
                             disable
                                 ? "Initializing session or waiting for indexing..."
@@ -88,8 +88,8 @@ export function ChatComposer({
                         }
                     />
 
-                    <div className="flex items-center justify-between gap-3 px-2 pt-1.5 border-t border-zinc-800/60">
-                        <p className="font-mono text-[11px] text-zinc-500 flex items-center gap-1">
+                    <div className="flex items-center justify-between gap-2 sm:gap-3 px-1.5 sm:px-2 pt-1.5 border-t border-zinc-800/60">
+                        <p className="hidden sm:flex font-mono text-[11px] text-zinc-500 items-center gap-1">
                             <span>Press</span>
                             <kbd className="rounded border border-zinc-700 bg-zinc-800 px-1 py-0.2 text-[10px] text-zinc-400">
                                 Enter
@@ -99,6 +99,9 @@ export function ChatComposer({
                                 Shift + Enter
                             </kbd>
                             <span>newline</span>
+                        </p>
+                        <p className="sm:hidden font-mono text-[10px] text-zinc-500">
+                            Neural RAG v2.0
                         </p>
 
                         {streaming && onStop ? (

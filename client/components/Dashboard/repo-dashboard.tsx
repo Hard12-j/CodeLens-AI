@@ -72,7 +72,7 @@ export function RepoDashboard() {
                 visibility={visibility}
             />
 
-            <div className="flex flex-1 flex-col gap-5 p-4 md:p-8">
+            <div className="flex flex-1 flex-col gap-4 sm:gap-5 p-3 sm:p-6 md:p-8">
                 {/* Sync error alert */}
                 {refresh.isError && (
                     <IndexErrorAlert

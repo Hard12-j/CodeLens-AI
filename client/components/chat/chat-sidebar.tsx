@@ -60,11 +60,13 @@ export function ChatSidebar({
     sessionId,
     onSelectSession,
     onSelectFilePrompt,
+    className,
 }: {
     repo: SidebarRepo
     sessionId: string | null
     onSelectSession: (sessionId: string) => void
     onSelectFilePrompt?: (prompt: string) => void
+    className?: string
 }) {
     const [tab, setTab] = useState<"chats" | "tree">("chats")
     const [fileSearch, setFileSearch] = useState("")
@@ -94,8 +96,8 @@ export function ChatSidebar({
     }
 
     return (
-        <aside className="w-full shrink-0 border-b border-white/[0.08] bg-zinc-950/80 p-3.5 backdrop-blur-xl md:w-80 md:border-r md:border-b-0 flex flex-col justify-between">
-            <div className="space-y-4">
+        <aside className={cn("w-full shrink-0 border-b border-white/[0.08] bg-zinc-950/80 p-3 sm:p-3.5 backdrop-blur-xl md:w-80 md:border-r md:border-b-0 flex flex-col justify-between overflow-y-auto", className)}>
+            <div className="space-y-3.5 sm:space-y-4">
                 {/* Repository Telemetry Card */}
                 <div className="rounded-xl border border-white/[0.08] bg-gradient-to-b from-zinc-900/90 to-black p-3.5 shadow-md">
                     <div className="flex items-center gap-2.5">
