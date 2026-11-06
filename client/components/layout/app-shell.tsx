@@ -126,57 +126,46 @@ export function AppShell({
                 <SidebarFooter className="border-t border-white/[0.06] p-3">
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <DropdownMenu>
-                                <DropdownMenuTrigger
-                                    render={<SidebarMenuButton className="w-full rounded-xl hover:bg-zinc-900/80 p-2" size="sm" />}
-                                >
-                                    <div className="flex items-center gap-2.5 overflow-hidden">
-                                        {user?.avatarUrl ? (
-                                            // eslint-disable-next-line @next/next/no-img-element
-                                            <img
-                                                alt={user.displayName}
-                                                className="size-7 rounded-lg border border-cyan-500/30 object-cover"
-                                                src={user.avatarUrl}
-                                            />
-                                        ) : (
-                                            <div className="flex size-7 items-center justify-center rounded-lg border border-white/[0.08] bg-zinc-900 text-xs font-mono font-bold text-cyan-400">
-                                                {user?.displayName?.charAt(0).toUpperCase() ?? "U"}
-                                            </div>
-                                        )}
-                                        <div className="grid min-w-0 flex-1 text-left text-xs leading-tight">
-                                            <span className="truncate font-sans font-medium text-white">
-                                                {user?.displayName ?? "User"}
-                                            </span>
-                                            <span className="truncate font-mono text-[10px] text-zinc-500">
-                                                @{user?.githubUsername ?? "github"}
-                                            </span>
+                            <div className="flex items-center gap-1">
+                                {/* Not clickable: avatar + name */}
+                                <div className="pointer-events-none flex min-w-0 flex-1 select-none items-center gap-2.5 overflow-hidden p-2">
+                                    {user?.avatarUrl ? (
+                                        // eslint-disable-next-line @next/next/no-img-element
+                                        <img
+                                            alt={user.displayName}
+                                            className="size-7 rounded-lg border border-cyan-500/30 object-cover"
+                                            src={user.avatarUrl}
+                                        />
+                                    ) : (
+                                        <div className="flex size-7 items-center justify-center rounded-lg border border-white/[0.08] bg-zinc-900 text-xs font-mono font-bold text-cyan-400">
+                                            {user?.displayName?.charAt(0).toUpperCase() ?? "U"}
                                         </div>
+                                    )}
+                                    <div className="grid min-w-0 flex-1 text-left text-xs leading-tight group-data-[collapsible=icon]:hidden">
+                                        <span className="truncate font-sans font-medium text-white">
+                                            {user?.displayName ?? "User"}
+                                        </span>
+                                        <span className="truncate font-mono text-[10px] text-zinc-500">
+                                            @{user?.githubUsername ?? "github"}
+                                        </span>
                                     </div>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent side="top" align="start" className="w-56 border border-white/[0.1] bg-zinc-950/95 backdrop-blur-2xl text-zinc-200">
-                                    <DropdownMenuLabel className="font-mono text-xs text-zinc-400">Session Identity</DropdownMenuLabel>
-                                    <DropdownMenuGroup>
-                                        <DropdownMenuItem
-                                            onClick={() => router.push("/dashboard/settings")}
-                                            className="hover:bg-zinc-900 hover:text-white cursor-pointer"
-                                        >
-                                            <Settings className="mr-2 size-4 text-cyan-400" />
-                                            Settings
-                                        </DropdownMenuItem>
-                                    </DropdownMenuGroup>
-                                    <DropdownMenuSeparator className="bg-zinc-800" />
-                                    <DropdownMenuItem
-                                        onClick={() => logout.mutate()}
-                                        className="hover:bg-rose-950/40 text-rose-400 cursor-pointer"
-                                    >
-                                        <LogOut className="mr-2 size-4" />
-                                        Log out
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
+                                </div>
+                                
+                                {/* Log out stays available */}
+                                <button
+                                    type="button"
+                                    onClick={() => logout.mutate()}
+                                    aria-label="Log out"
+                                    title="Log out"
+                                    className="shrink-0 rounded-lg p-2 text-zinc-500 transition-colors hover:bg-rose-950/40 hover:text-rose-400 group-data-[collapsible=icon]:hidden"
+                                >
+                                    <LogOut className="size-4" />
+                                </button>
+                            </div>
                         </SidebarMenuItem>
                     </SidebarMenu>
                 </SidebarFooter>
+                
             </Sidebar>
 
             <SidebarInset className="bg-black text-zinc-100 min-h-screen">
