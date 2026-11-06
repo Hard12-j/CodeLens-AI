@@ -7,22 +7,23 @@ import org.springframework.ai.google.genai.text.GoogleGenAiTextEmbeddingOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class AiConfig {
 
     @Bean
+    @Primary
     public EmbeddingModel embeddingModel(@Value("${spring.ai.google.genai.api-key:${API_KEY:}}") String apiKey) {
         GoogleGenAiEmbeddingConnectionDetails connectionDetails = GoogleGenAiEmbeddingConnectionDetails.builder()
                 .apiKey(apiKey)
                 .build();
 
         GoogleGenAiTextEmbeddingOptions options = GoogleGenAiTextEmbeddingOptions.builder()
-                .model("text-embedding-004")
+                .model("gemini-embedding-001")
                 .dimensions(768)
                 .build();
 
         return new GoogleGenAiTextEmbeddingModel(connectionDetails, options);
     }
 }
-

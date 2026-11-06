@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.ai.document.Document;
 import org.springframework.stereotype.Component;
 import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.json.JsonMapper;
 
 import java.util.List;
@@ -48,5 +49,16 @@ public class CitationMapper {
             }
         }
         return 0;
+    }
+
+    public List<CitationDto> fromJson(String citations) {
+         if (citations == null || citations.isBlank()) {
+            return List.of();
+        }
+        try {
+            return jsonMapper.readValue(citations, new TypeReference<List<CitationDto>>() {});
+        } catch (JacksonException e) {
+            return List.of();
+        }
     }
 }

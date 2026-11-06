@@ -1,99 +1,136 @@
 "use client";
-import React from "react";
-import Link from "next/link";
-import { useRouter, useSearchParams} from "next/navigation";
-import { Suspense, useEffect} from "react";
-import { AlertCircle } from "lucide-react";
 
-import {GitHubIcon} from "@/components/icons/github-icon";
-import {ModeToggle} from "@/components/ui/mode-toggle";
-import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
-import {buttonVariants} from "@/components/ui/button";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import {Spinner} from "@/components/ui/spinner";
-import {cn} from "@/lib/utils";
-import { getGithubLoginUrl } from "@/lib/api";
+import React, { Suspense, useEffect } from "react";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { AlertCircle, CheckCircle2, Lock, Sparkles, Terminal } from "lucide-react";
+import { GithubIcon } from "@/components/icons/GithubIcon";
+
 import { useCurrentUser } from "@/hooks/use-auth";
+import { getGithubLoginUrl } from "@/lib/api";
 
 function LoginLoading() {
     return (
-        <div className="flex min-h-svh items-center justify-center">
-            <Spinner className="size-8"/>
+        <div className="flex min-h-screen items-center justify-center bg-black">
+            <div className="flex flex-col items-center gap-3">
+                <div className="size-8 animate-spin rounded-full border-2 border-cyan-400 border-t-transparent" />
+                <span className="font-mono text-xs text-zinc-500">// Authenticating session...</span>
+            </div>
         </div>
-    )
+    );
 }
 
-const LoginContent = () => {
+function LoginContent() {
     const params = useSearchParams();
     const router = useRouter();
     const error = params.get("error");
     const next = params.get("next") || "/dashboard";
 
-    const{data: user, isLoading} = useCurrentUser();
+    const { data: user, isLoading } = useCurrentUser();
 
     useEffect(() => {
-        if(!isLoading && user){
+        if (!isLoading && user) {
             router.replace(next.startsWith("/") ? next : "/dashboard");
         }
-    },[user, isLoading, next, router]);
-    
-    if(isLoading || user){
-        return<LoginLoading />
+    }, [user, isLoading, next, router]);
+
+    if (isLoading || user) {
+        return <LoginLoading />;
     }
 
     return (
-        <div className="relative flex min-h-svh flex-col overflow-hidden bg-background">
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,oklch(from_var(--primary)_l_c_h/0.1),transparent_55%)]" />
-            <header className="relative z-10 flex h-14 items-center justify-between px-4">
-                <Link href="/">
-                    <span className="font-semibold tracking-tight">CodeLens AI</span>
+        <div className="relative flex min-h-screen flex-col justify-between bg-black text-zinc-100 selection:bg-cyan-500/30 selection:text-cyan-200">
+            {/* Background optics */}
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_-10%,rgba(6,182,212,0.2),transparent_70%)]" />
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+
+            {/* Top Bar */}
+            <header className="relative z-10 flex h-16 items-center justify-between px-6 border-b border-white/[0.06] bg-black/40 backdrop-blur-xl">
+                <Link href="/" className="flex items-center gap-2.5">
+                    <span className="flex size-8 items-center justify-center rounded-xl border border-cyan-500/30 bg-cyan-950/40 text-cyan-400">
+                        <Sparkles className="size-4" />
+                    </span>
+                    <span className="font-sans font-bold tracking-tight text-white">
+                        CodeLens <span className="text-cyan-400">AI</span>
+                    </span>
                 </Link>
-                <ModeToggle />
+
+                <Link
+                    href="/"
+                    className="font-mono text-xs text-zinc-400 hover:text-white transition-colors"
+                >
+                    &larr; Back to Home
+                </Link>
             </header>
 
-                <main className="relative z-10 flex flex-1 items-center justify-center px-4 py-10">
-                    <Card className="w-full max-w-sm border-border/70 bg-card/90 shadow-foreground/5 backdrop-blur-xl">
-                        <CardHeader className="space-y-4 text-center">
-                            <div className="mx-auto flex size-12 items-center justify-center rounded-2xl bg-foreground text-background">
-                                <GitHubIcon className="size-6"></GitHubIcon>
+            {/* Login Center Pod */}
+            <main className="relative z-10 flex flex-1 items-center justify-center p-4">
+                <div className="w-full max-w-md overflow-hidden rounded-2xl border border-white/[0.1] bg-gradient-to-b from-zinc-900/90 via-zinc-950/90 to-black p-8 shadow-[0_20px_60px_rgba(0,0,0,0.8)] backdrop-blur-2xl">
+                    {/* Header */}
+                    <div className="text-center">
+                        <div className="mx-auto flex size-14 items-center justify-center rounded-2xl border border-cyan-500/30 bg-cyan-950/40 text-cyan-400 shadow-[0_0_25px_rgba(6,182,212,0.25)]">
+                            <GithubIcon className="size-7" />
+                        </div>
+                        <h2 className="mt-5 font-sans text-2xl font-bold tracking-tight text-white">
+                            Connect GitHub
+                        </h2>
+                        <p className="mt-2 text-xs leading-relaxed text-zinc-400">
+                            Authorize CodeLens AI to read your public and private repositories for vector indexing and chat.
+                        </p>
+                    </div>
+
+                    {/* Error Notice */}
+                    {error && (
+                        <div className="mt-6 flex items-start gap-3 rounded-xl border border-rose-500/30 bg-rose-950/30 p-3.5 text-xs text-rose-300">
+                            <AlertCircle className="size-4 shrink-0 text-rose-400 mt-0.5" />
+                            <div>
+                                <p className="font-bold">Authentication failed</p>
+                                <p className="mt-0.5 text-zinc-400">
+                                    {error === "oauth_failed"
+                                        ? "GitHub authorization failed. Verify GITHUB_CLIENT_ID and callback settings."
+                                        : error === "session"
+                                          ? "Could not verify session with backend server on port 8080."
+                                          : `Error: ${error}`}
+                                </p>
                             </div>
-                            <div className="space-y-1">
-                                <CardTitle className="text-xl">sign in</CardTitle>
-                                <CardDescription>
-                                    Connect Github to chat with your repositories.
-                                </CardDescription>
-                            </div>                        
-                        </CardHeader>
+                        </div>
+                    )}
 
-                        <CardContent className="space-y-4">
-                            {error && (
-                                <Alert variant="destructive">
-                                    <AlertCircle/>
-                                    <AlertTitle>Sign-in failed</AlertTitle>
-                                    <AlertDescription>
-                                        {error === "oauth_failed"
-                                            ? "GitHub authorization failed. Verify GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, and your GitHub OAuth Callback URL."
-                                            : error === "session"
-                                            ? "Could not verify session with backend. Ensure backend is running on port 8080."
-                                            : `Authentication error: ${error}`}
-                                    </AlertDescription>
-                                </Alert>
-                            )}
+                    {/* Action button */}
+                    <div className="mt-7">
+                        <a
+                            href={getGithubLoginUrl()}
+                            className="inline-flex h-12 w-full items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-400 to-emerald-400 px-5 font-sans text-sm font-semibold text-zinc-950 shadow-[0_0_25px_rgba(6,182,212,0.35)] transition-all hover:brightness-110 active:scale-95"
+                        >
+                            <GithubIcon className="size-5" />
+                            <span>Continue with GitHub</span>
+                        </a>
+                    </div>
 
-                            <a href={getGithubLoginUrl()}
-                                className={cn(
-                                    buttonVariants({size: "lg"}),
-                                    "inline-flex w-full items-center justify-center gap-2 bg-foreground text-background hover:bg-foreground/90"
-                                )}
-                            >
-                                <GitHubIcon className="size-5" />
-                                    Continue with GitHub
-                            </a>
-                        </CardContent>
-                    </Card>
-                </main>
+                    {/* Telemetry info */}
+                    <div className="mt-8 border-t border-zinc-800/80 pt-6 space-y-2.5 font-mono text-[11px] text-zinc-400">
+                        <div className="flex items-center gap-2">
+                            <CheckCircle2 className="size-3.5 text-cyan-400" />
+                            <span>Read-only repository access</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <Lock className="size-3.5 text-emerald-400" />
+                            <span>OAuth access tokens encrypted at rest</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <Terminal className="size-3.5 text-teal-400" />
+                            <span>Instant webhook & tree synchronization</span>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            {/* Footer */}
+            <footer className="relative z-10 py-6 text-center font-mono text-xs text-zinc-600">
+                CodeLens AI · Secure GitHub OAuth 2.0
+            </footer>
         </div>
-    )
+    );
 }
 
 export default function LoginPage() {
@@ -103,5 +140,3 @@ export default function LoginPage() {
         </Suspense>
     );
 }
-
-

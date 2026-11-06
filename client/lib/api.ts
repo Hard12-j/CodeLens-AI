@@ -1,7 +1,5 @@
 export type IndexStatus = "PENDING" | "INDEXING" | "READY" | "FAILED";
 
-
-
 export type User = {
     id: string;
     githubId: number;
@@ -37,6 +35,36 @@ export type IndexStatusResponse = {
     chunkCount: number;
     indexedAt: string | null;
     errorMessage: string | null;
+};
+
+export type ChatSession = {
+    id: string;
+    repositoryId: string;
+    title: string;
+    createdAt: string;
+};
+
+export type Citation = {
+    filePath: string;
+    chunkIndex: number;
+    score: number;
+    language: string;
+    snippet: string;
+};
+
+export type ChatMessage = {
+    id: string;
+    role: "USER" | "ASSISTANT";
+    content: string;
+    citation: Citation[];
+    createdAt: string;
+};
+
+export type RepoTreeEntry = {
+    path: string;
+    type: "blob" | "tree";
+    size?: number;
+    sha?: string;
 };
 
 export type user = User;
@@ -106,6 +134,16 @@ export const api = {
     startIndex: (id: string) =>
         apiFetch<Repository>(`/api/repos/${id}/index`, { method: "POST" }),
     indexStatus: (id: string) =>
-        apiFetch<IndexStatusResponse>(`/api/repos/${id}/index-status`),
-
+        apiFetch<IndexStatusResponse>(`/api/repos/${id}/status`),
+    getRepoTree: (id: string) =>
+        apiFetch<{ tree?: RepoTreeEntry[] }>(`/api/repos/${id}/tree`),
+    createSession: (repositoryId: string, title?: string) =>
+        apiFetch<ChatSession>("/api/chat/sessions", {
+            method: "POST",
+            body: JSON.stringify({ repositoryId, title }),
+        }),
+    listSessions: (repositoryId: string) =>
+        apiFetch<ChatSession[]>(`/api/chat/sessions?repositoryId=${encodeURIComponent(repositoryId)}`),
+    getMessages: (sessionId: string) =>
+        apiFetch<ChatMessage[]>(`/api/chat/sessions/${sessionId}`),
 };

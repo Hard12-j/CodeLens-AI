@@ -2,6 +2,7 @@ package com.CodeLens_AI.services.github;
 
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Builder
+@Slf4j
 public class GithubApiClient {
     private static final String API_BASE = "https://api.github.com/";
     private static final ParameterizedTypeReference<List<Map<String, Object>>> LIST_MAP = new ParameterizedTypeReference<>(){};
@@ -79,14 +81,36 @@ public class GithubApiClient {
     }
 
     public Map<String, Object> getRepoTree(String accessToken, String owner, String repo, String branch){
-        return client(accessToken)
-                .get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/repos/{owner}/{repo}/git/trees/{branch}")
-                        .queryParam("recursive", "1")
-                        .build(owner, repo, branch))
-                .retrieve()
-                .body(MAP);
+        String ref = (branch != null && !branch.isBlank()) ? branch : "HEAD";
+        try {
+            Map<String, Object> result = client(accessToken)
+                    .get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/repos/{owner}/{repo}/git/trees/{branch}")
+                            .queryParam("recursive", "1")
+                            .build(owner, repo, ref))
+                    .retrieve()
+                    .body(MAP);
+            return result != null ? result : Map.of("tree", List.of());
+        } catch (Exception e) {
+            log.warn("Failed to fetch tree with ref {}: {}", ref, e.getMessage());
+            if (!"HEAD".equalsIgnoreCase(ref)) {
+                try {
+                    Map<String, Object> fallback = client(accessToken)
+                            .get()
+                            .uri(uriBuilder -> uriBuilder
+                                    .path("/repos/{owner}/{repo}/git/trees/HEAD")
+                                    .queryParam("recursive", "1")
+                                    .build(owner, repo))
+                            .retrieve()
+                            .body(MAP);
+                    return fallback != null ? fallback : Map.of("tree", List.of());
+                } catch (Exception ex) {
+                    log.error("Failed to fetch tree with HEAD for {}/{}: {}", owner, repo, ex.getMessage());
+                }
+            }
+            return Map.of("tree", List.of());
+        }
     }
 
     private RestClient client(String accessToken){

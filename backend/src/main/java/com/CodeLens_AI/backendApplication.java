@@ -2,11 +2,14 @@ package com.CodeLens_AI;
 
 import com.CodeLens_AI.services.github.GitHubRateLimiter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
+import org.springframework.ai.model.openai.autoconfigure.OpenAiEmbeddingAutoConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {
+        OpenAiEmbeddingAutoConfiguration.class
+})
 public class backendApplication {
     @Bean
     GitHubRateLimiter gitHubRateLimiter(

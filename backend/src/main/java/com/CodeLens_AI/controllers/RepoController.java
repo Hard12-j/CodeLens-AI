@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -43,6 +44,12 @@ public class RepoController {
     public IndexStatusResponse status(@PathVariable UUID id){
         UUID userId = currentUser.require().getId();
         return repoService.status(id, userId);
+    }
+
+    @GetMapping("/{id}/tree")
+    public Map<String, Object> tree(@PathVariable UUID id){
+        UUID userId = currentUser.require().getId();
+        return repoService.getRepoTree(id, userId);
     }
 
     @PostMapping("/{id}/index")

@@ -2,6 +2,14 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* Tailwind CSS v4 directives; not standard CSS at-rules. */
+/* stylelint-disable at-rule-no-unknown */
+/*noinspection CssUnknownAtRule*/
+@source "../node_modules/streamdown/dist/**/*.js";
+@source "../node_modules/@streamdown/code/dist/**/*.js";
+/* stylelint-enable at-rule-no-unknown */
+
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

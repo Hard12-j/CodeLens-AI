@@ -14,6 +14,8 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -196,5 +198,13 @@ public class indexingService {
             repositoryRepository.save(repo);
         });
         log.error("Indexing marked as failed for repo {}: {}", repoId, errorMessage);
+    }
+
+    // indexingService: heal rows orphaned by a restart
+    @EventListener(ApplicationReadyEvent.class)
+    public void failStaleIndexing() {
+        repositoryRepository.findAll().stream()
+                .filter(r -> r.getIndexStatus() == IndexStatus.INDEXING)
+                .forEach(r -> markFailed(r.getId(), "Interrupted by server restart"));
     }
 }

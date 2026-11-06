@@ -98,6 +98,14 @@ public class RepoService {
         );
     }
 
+    @Transactional(readOnly = true)
+    public Map<String, Object> getRepoTree(UUID repoId, UUID userId){
+        Repositories repo = requiredOwned(repoId, userId);
+        User user = userService.requiredById(userId);
+        String token = userService.decryptAccessToken(user);
+        return githubApiClient.getRepoTree(token, repo.getOwner(), repo.getName(), repo.getDefaultBranch());
+    }
+
     public RepositoryResponse toResponse(Repositories repo) {
         return new RepositoryResponse(
                 repo.getId(),
